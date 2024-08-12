@@ -17,8 +17,14 @@
 }
 
 .back>span{
-    display: block;
+    display: none;
     background-color: blue;
     width: 200px;
     z-index: 100;
+    cursor: pointer;
 }
+
+.fliped {
+    transform: rotateY(180deg);
+    transition: 1sec;
+  }
