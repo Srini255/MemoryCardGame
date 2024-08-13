@@ -1,4 +1,4 @@
-let a=["img1.png","img2.jpg","img3.jpg","img4.png","img1.png","img2.jpg","img3.jpg","img4.png"]
+let a=["img1.png","img2.png","img3.png","img4.png","img5.png","img6.png","img1.png","img2.png","img3.png","img4.png","img5.png","img6.png"]
 let matches=[];
 let check=[];
 document.addEventListener('DOMContentLoaded',()=>
@@ -63,9 +63,12 @@ document.querySelectorAll('.flip-card').forEach(card=>{
         if(check.length===2){
             compare();
         }
-        flip.classList.contains("inner")?flip.classList.remove("inner"):flip.classList.add("inner");
+        if(flip.classList.contains("inner")){
+            return;
+        }
+        flip.classList.add("inner");
         check.push(flip);
-        if(matches.length==6&&check.length===2){
+        if(matches.length==10&&check.length===2){
             compare();}
     })
     
@@ -80,7 +83,14 @@ function compare(){
         check=[];
         if(matches.length===a.length)
         {
-            alert("Congratulations!you won the game");
+            var count=2;
+            counting=setInterval(()=>{
+                count=count-1;
+                if(count==0){
+                    alert("Congratulations!you won the game");
+                }
+            },1000);
+            
         }
     }else{ 
         check.forEach(ele=>{
