@@ -19,9 +19,23 @@
     width: 150px;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    border-radius: 10px;
 }
 .flipcard-front{
-    background-color: grey;
+    background-color: #0D1B2A;
+    color: white;
+    font-weight: bold;
+    text-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1);
+}
+
+.flipcard-front:hover{
+    transition: 0.5s;
+    transform: scale(1.06);
+    
 }
 
 .flipcard-inner{
@@ -63,3 +77,10 @@
   .inner{
     transform: rotateY(180deg);
   }
+
+
+
+.c-logo{
+    width: 40px;
+    content: url("../img/card.png");
+}

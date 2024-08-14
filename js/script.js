@@ -1,6 +1,9 @@
 let a=["img1.png","img2.png","img3.png","img4.png","img5.png","img6.png","img1.png","img2.png","img3.png","img4.png","img5.png","img6.png"]
 let matches=[];
 let check=[];
+let moves=0;
+let wrong=0;
+let right=0;
 document.addEventListener('DOMContentLoaded',()=>
 {
     startGame();
@@ -10,15 +13,44 @@ document.addEventListener('DOMContentLoaded',()=>
 function startGame(){
     shuffle();
     const cards=document.querySelectorAll('#img');
-    let i=0;
-    cards.forEach(card=>{
-        card.id=`${a[i]}`;
-        card.className='a-img';
-        card.src=`img/${a[i]}`;
-        // card.style.width="200px";
-        // card.style.height="200px";
-        i++;
-    });
+    const elements=document.querySelector('.elements')
+    for(let i=0;i<a.length;i++){
+        const code=`
+        <div class="flip-card">
+                <div class="flipcard-inner">
+                    <div class="flipcard-front"> 
+                        <span class="c-logo"></span>
+                    </div>
+                    <div class="flipcard-back">
+                        <img src="img/${a[i]}" id="${a[i]}" alt="avatar" width="100px" height="100px" cass="a-img">
+                    </div>
+                </div>
+        </div>`;
+        elements.innerHTML+=code;
+    }
+    document.querySelectorAll('.flip-card').forEach(card=>{
+        card.addEventListener('click',()=>{
+            const flip=card.querySelector('.flipcard-inner');   
+            if(check.length===2){
+                compare();
+            }
+            if(flip.classList.contains("inner")){
+                return;
+            }
+            flip.classList.add("inner");
+            check.push(flip);
+            if(matches.length==10&&check.length===2){
+                compare();}
+        })    
+    })
+    // cards.forEach(card=>{
+    //     card.id=`${a[i]}`;
+    //     card.className='a-img';
+    //     card.src=`img/${a[i]}`;
+    //     // card.style.width="200px";
+    //     // card.style.height="200px";
+    //     i++;
+    // });
 }
 
 function shuffle(){
@@ -56,28 +88,11 @@ document.getElementById('start').addEventListener('click',()=>{
     },"1000")
 })
 
-
-document.querySelectorAll('.flip-card').forEach(card=>{
-    card.addEventListener('click',()=>{
-        const flip=card.querySelector('.flipcard-inner');   
-        if(check.length===2){
-            compare();
-        }
-        if(flip.classList.contains("inner")){
-            return;
-        }
-        flip.classList.add("inner");
-        check.push(flip);
-        if(matches.length==10&&check.length===2){
-            compare();}
-    })
-    
-})
-
 function compare(){
     const first=check[0].children[1].children[0].id;
     const second=check[1].children[1].children[0].id;
     if(first===second){
+        right+=1;
         check.forEach(ele=>{
             matches.push(ele)});
         check=[];
@@ -87,17 +102,19 @@ function compare(){
             counting=setInterval(()=>{
                 count=count-1;
                 if(count==0){
-                    alert("Congratulations!you won the game");
+                    showPopup("Congratulations!You Won The game");
                 }
             },1000);
             
         }
     }else{ 
+        wrong+=1;
         check.forEach(ele=>{
             ele.classList.remove("inner");
         })
         check=[];
     }
+    moves+=1;
 }
 
 function reset(){
@@ -114,3 +131,26 @@ function reset(){
     });
     startGame();
 }
+
+document.getElementById('close').addEventListener('click',()=>{
+    document.getElementById('manualPopup').style.display="none";
+})
+
+
+
+function showPopup(msg)
+{
+    const popup=document.getElementById('manualPopup');
+    popup.style.display="block";
+    const result=document.getElementById('result');
+    result.textContent=msg;
+    document.getElementById('t-moves').textContent=`You Got ${wrong} Misses Of ${moves} Moves`;
+}
+
+// let moves=0;
+// let wrong=0;
+// let right=0;
+
+// c-moves"></p>
+//               <p id="w-moves"></p>
+//               <p id="t-moves"
