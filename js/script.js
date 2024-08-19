@@ -4,12 +4,19 @@ let check=[];
 let moves=0;
 let wrong=0;
 let right=0;
-document.addEventListener('DOMContentLoaded',()=>
-{
+// document.addEventListener('DOMContentLoaded',()=>
+// {
+//     startGame();
+// });
+
+document.getElementById('start').addEventListener('click',()=>{
+    document.querySelector('.elements').classList.add("elements1");
+    document.querySelector('.time').classList.add("times");
+    document.querySelector('.starting').style.display="none";
     startGame();
+    startTimer();
+    document.querySelector('header').style.display="none";
 });
-
-
 function startGame(){
     shuffle();
     const cards=document.querySelectorAll('#img');
@@ -22,7 +29,7 @@ function startGame(){
                         <span class="c-logo"></span>
                     </div>
                     <div class="flipcard-back">
-                        <img src="img/${a[i]}" id="${a[i]}" alt="avatar" width="100px" height="100px" cass="a-img">
+                        <img src="img/card/${a[i]}" id="${a[i]}" alt="avatar" width="100px" height="100px" cass="a-img">
                     </div>
                 </div>
         </div>`;
@@ -31,11 +38,11 @@ function startGame(){
     document.querySelectorAll('.flip-card').forEach(card=>{
         card.addEventListener('click',()=>{
             const flip=card.querySelector('.flipcard-inner');   
-            if(check.length===2){
-                compare();
-            }
             if(flip.classList.contains("inner")){
                 return;
+            }
+            if(check.length===2){
+                compare();
             }
             flip.classList.add("inner");
             check.push(flip);
@@ -71,22 +78,25 @@ document.querySelectorAll('.back').forEach(image=>{
 
 
 
-document.getElementById('start').addEventListener('click',()=>{
+function startTimer(){
     const Count=document.getElementById('time');
-    Count.value=60;
+    const Cdiv=document.querySelector('.time');
+    Count.value=45;
     Count.textContent=Count.value;
-    document.getElementById('start').style.display="none";
     CountDown=setInterval(()=>{
-        
+        if(Count.value<=15)
+        {
+            Cdiv.classList.add("time-low");
+        }
         if(Count.value===1)
         {
-            document.getElementById('start').style.display="block";
             clearInterval(CountDown);
+            showPopup("Sorry! You Lose The Game Time ends.");
         }
         Count.value=Count.value-1;
         Count.textContent=Count.value;
     },"1000")
-})
+}
 
 function compare(){
     const first=check[0].children[1].children[0].id;
@@ -102,9 +112,10 @@ function compare(){
             counting=setInterval(()=>{
                 count=count-1;
                 if(count==0){
+                    clearInterval(CountDown);
                     showPopup("Congratulations!You Won The game");
                 }
-            },1000);
+            },200);
             
         }
     }else{ 
@@ -144,7 +155,8 @@ function showPopup(msg)
     popup.style.display="block";
     const result=document.getElementById('result');
     result.textContent=msg;
-    document.getElementById('t-moves').textContent=`You Got ${wrong} Misses Of ${moves} Moves`;
+    const time=document.getElementById('time').value;
+    document.getElementById('t-moves').textContent=`Your Total Moves ${moves} and finishes ${time}s before`;
 }
 
 // let moves=0;
