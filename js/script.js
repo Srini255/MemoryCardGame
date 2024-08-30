@@ -10,13 +10,18 @@ let right=0;
 // });
 
 document.getElementById('start').addEventListener('click',()=>{
+    iniitateGame();
+});
+
+function iniitateGame(){
     document.querySelector('.elements').classList.add("elements1");
     document.querySelector('.time').classList.add("times");
     document.querySelector('.starting').style.display="none";
     startGame();
     startTimer();
     document.querySelector('header').style.display="none";
-});
+}
+
 function startGame(){
     shuffle();
     const cards=document.querySelectorAll('#img');
@@ -166,3 +171,14 @@ function showPopup(msg)
 // c-moves"></p>
 //               <p id="w-moves"></p>
 //               <p id="t-moves"
+
+
+document.getElementById('retry').addEventListener('click',()=>{
+    const elements=document.querySelector('.elements');
+    document.getElementById('manualPopup').style.display="none";
+    while(elements.firstChild)
+    {
+        elements.removeChild(elements.firstChild);
+    }
+    iniitateGame();
+})
